@@ -1,4 +1,5 @@
 // Select Start Quiz button
+var timerEl = document.querySelector("header");
 var startEl = document.querySelector("#starttrivia");
 var welcomeEl = document.querySelector("#welcome-container");
 var triviaEl = document.querySelector("#trivia");
@@ -7,6 +8,8 @@ var option1 = document.querySelector("#option-1");
 var option2 = document.querySelector("#option-2");
 var option3 = document.querySelector("#option-3");
 var option4 = document.querySelector("#option-4");
+var gameOverForm = document.querySelector("#game-over");
+var evaluation = document.querySelector("#evaluation");
 //console.log(startbtnEl);
 
 // Create questions for the trivia
@@ -66,33 +69,88 @@ var displayQuestions = function() {
 
 }
 
-
-
 // Function to start quiz
 var startbtnEl = function() {
     welcomeEl.style.display = "none";
     displayQuestions();
     triviaEl.style.display = "block";
+    countdown();
 } 
 
 //startbtnEl();
 startEl.addEventListener("click", startbtnEl);
 
+// Game over function
+var gameOver = function(){
+var allDone = document.querySelector("#all-done");
+    allDone.textContent = "All Done!";
+var finalScore = document.querySelector("#final-score");
+    finalScore.textContent = "Your final Score is " + score;
+var getInitials = document.createElement("label");
+    getInitials.textContent = "Enter initials:";
+    gameOverForm.appendChild(getInitials);
+var inputInitials = document.createElement("input");
+    inputInitials.style.display = "inline";
+    gameOverForm.appendChild(inputInitials);
+var submitbtn = document.createElement("button");
+    submitbtn.textContent = "Submit";
+    gameOverForm.addEventListener("submit", function(event){
+        event.preventDefault();
+    });
+    gameOverForm.appendChild(submitbtn);
+
+    
+}
+
 // function to check answer
+score = 0;
 var checkAnswer = function(answer){
     if( answer === triviaquestions[startQuestions].correct){
         // answer is correct
-        alert("correct")
-        //correctAnswer();
+        correct();
+        score += 10;
     }else {
-        alert("incorrect")
-        //incorrectAnswer();
+        incorrect();
     }
     count = 0;
     if(startQuestions < lastQuestions){
         startQuestions++;
         displayQuestions();
     } else {
-        //break;
+        triviaEl.style.display = "none";
+        gameOver();
     }
+}
+
+// Correct answers function
+var correct = function(){
+    //var evaluation = document.querySelector("#evaluation");
+    evaluation.textContent = "Correct!";
+}
+
+// incorrect answers function
+var incorrect = function(){
+    //var evaluation = document.querySelector("#evaluation");
+    evaluation.textContent = "Wrong!";
+    timeleft = timeleft -15;
+
+}
+
+// set countdown function
+var timeleft = 75;
+var countdown = function() {
+    // Use the setInterval() method to call a function to be executed every 1000 milliseconds
+    var timeInterval = setInterval(function(){
+        if (timeleft > 1){
+            timerEl.innerHTML = "<h2>Timer: " + timeleft + "</h2>";
+            timeleft--;
+        } else if (timeleft === 1){
+            timerEl.innerHTML = "<h2>Timer: " + timeleft + "</h2>";
+            timeleft--;
+        } else {
+            clearInterval(timeInterval);
+            triviaEl.style.display = "none";
+            //gameOver();
+        }
+    },1000);
 }
