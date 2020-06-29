@@ -9,7 +9,16 @@ var option2 = document.querySelector("#option-2");
 var option3 = document.querySelector("#option-3");
 var option4 = document.querySelector("#option-4");
 var gameOverForm = document.querySelector("#game-over");
+var inputGoEl = document.querySelector("#initials");
+var labelGoEl = document.querySelector("#enter-initials");
+var submitGoEl = document.querySelector("#submit-initials");
 var evaluation = document.querySelector("#evaluation");
+var highScoreForm = document.querySelector("#high-score");
+var hsTitle = document.querySelector("#hs-title");
+var hsPlayer = document.querySelector("#hs-player");
+var goBackBtn = document.querySelector("#go-backbtn");
+var clearHsBtn = document.querySelector("#clearhs-btn");
+
 //console.log(startbtnEl);
 
 // Create questions for the trivia
@@ -20,7 +29,7 @@ var triviaquestions = [
         a2: "2. Booleans",
         a3: "3. Alerts",
         a4: "4. Numbers",
-        correct: "option-2"
+        correct: "option-3"
     }, {
         question: "The condition in a if / else statement is enclosed with________",
         a1: "1. quotes",
@@ -41,14 +50,14 @@ var triviaquestions = [
         a2: "2. curly brackets",
         a3: "3. quotes",
         a4: "4. parenthesis",
-        correct: "option-2"
+        correct: "option-3"
     }, {
         question: "A very useful tool used during development and debugging for printing content to the debugger is:",
         a1: "1. JavaScript",
         a2: "2. terminal/bash",
         a3: "3. for loops",
         a4: "4. console.log",
-        correct: "option-3"
+        correct: "option-4"
     }
 ]
 
@@ -74,43 +83,68 @@ var startbtnEl = function() {
     welcomeEl.style.display = "none";
     displayQuestions();
     triviaEl.style.display = "block";
-    countdown();
+    timeInterval = setInterval(countdown,1000);
+    saveHighScore();
 } 
 
 //startbtnEl();
 startEl.addEventListener("click", startbtnEl);
 
+// Save High Score
+var saveHighScore = function(event){
+    event.preventDefault();
+    gameOverForm.style.display = "none";
+    var score = localStorage.getItem("score");
+    var inputEl = localStorage.getItem("initials");
+    //console.log('inputEl ', JSON.parse(inputEl));
+
+    if (score === null || inputEl === null) {
+        return;
+    }
+    hsPlayer.textContent = "1. " + inputEl + score;
+    //hsTitle.textContent = "High Scores";
+    //hsTitle.style.display = "inline";
+    goBackBtn.textContent = "Go Bach";
+    goBackBtn.style.display = "inline-block";
+    clearHsBtn.textContent = "Clear high scores";
+    clearHsBtn.style.display = "inline-block";
+
+
+}
+
 // Game over function
 var gameOver = function(){
+    event.preventDefault();
 var allDone = document.querySelector("#all-done");
     allDone.textContent = "All Done!";
 var finalScore = document.querySelector("#final-score");
     finalScore.textContent = "Your final Score is " + score;
-var getInitials = document.createElement("label");
-    getInitials.textContent = "Enter initials:";
-    gameOverForm.appendChild(getInitials);
-var inputInitials = document.createElement("input");
-    inputInitials.style.display = "inline";
-    gameOverForm.appendChild(inputInitials);
-var submitbtn = document.createElement("button");
-    submitbtn.textContent = "Submit";
-    gameOverForm.addEventListener("submit", function(event){
-        event.preventDefault();
-    });
-    gameOverForm.appendChild(submitbtn);
+    labelGoEl.textContent = "Enter initials:";
+    labelGoEl.style.display = "inline-block";
+    inputGoEl.style.display = "inline";
+    submitGoEl.textContent = "Submit";
+    submitGoEl.style.display = "inline";
 
-    
+    var inputValue = document.querySelector("#initials").value;
+
+    localStorage.setItem("score", score);
+    localStorage.setItem("initials", JSON.stringify(inputValue));
+
+    gameOverForm.reset();
 }
+gameOverForm.addEventListener("submit", saveHighScore);
 
 // function to check answer
-score = 0;
+var score = 0;
 var checkAnswer = function(answer){
     if( answer === triviaquestions[startQuestions].correct){
         // answer is correct
         correct();
-        score += 10;
+        score = timeleft;
     }else {
         incorrect();
+        timeleft = timeleft -10;
+        score = timeleft;
     }
     count = 0;
     if(startQuestions < lastQuestions){
@@ -119,6 +153,7 @@ var checkAnswer = function(answer){
     } else {
         triviaEl.style.display = "none";
         gameOver();
+        stopTimer();
     }
 }
 
@@ -132,7 +167,7 @@ var correct = function(){
 var incorrect = function(){
     //var evaluation = document.querySelector("#evaluation");
     evaluation.textContent = "Wrong!";
-    timeleft = timeleft -15;
+    
 
 }
 
@@ -140,7 +175,7 @@ var incorrect = function(){
 var timeleft = 75;
 var countdown = function() {
     // Use the setInterval() method to call a function to be executed every 1000 milliseconds
-    var timeInterval = setInterval(function(){
+    
         if (timeleft > 1){
             timerEl.innerHTML = "<h2>Timer: " + timeleft + "</h2>";
             timeleft--;
@@ -148,9 +183,14 @@ var countdown = function() {
             timerEl.innerHTML = "<h2>Timer: " + timeleft + "</h2>";
             timeleft--;
         } else {
-            clearInterval(timeInterval);
+            //clearInterval(timeInterval);
+            stopTimer();
             triviaEl.style.display = "none";
             //gameOver();
         }
-    },1000);
+    
+}
+
+var stopTimer = function() {
+    clearInterval(timeInterval);
 }
