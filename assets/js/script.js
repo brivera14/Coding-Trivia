@@ -1,5 +1,6 @@
-// Select Start Quiz button
-var timerEl = document.querySelector("header");
+// Declare Variables
+var timerEl = document.querySelector("#timer");
+var viewHsEl = document.querySelector("#view-hs");
 var startEl = document.querySelector("#starttrivia");
 var welcomeEl = document.querySelector("#welcome-container");
 var triviaEl = document.querySelector("#trivia");
@@ -18,8 +19,7 @@ var hsTitle = document.querySelector("#hs-title");
 var hsPlayer = document.querySelector("#hs-player");
 var goBackBtn = document.querySelector("#go-backbtn");
 var clearHsBtn = document.querySelector("#clearhs-btn");
-
-//console.log(startbtnEl);
+var finalScoreEl = document.querySelector("#final-score");
 
 // Create questions for the trivia
 var triviaquestions = [
@@ -61,7 +61,7 @@ var triviaquestions = [
     }
 ]
 
-// Variables
+// Variables for Display Question Function
 var lastQuestions = triviaquestions.length - 1;
 var startQuestions = 0;
 count = 0;
@@ -84,67 +84,66 @@ var startbtnEl = function() {
     displayQuestions();
     triviaEl.style.display = "block";
     timeInterval = setInterval(countdown,1000);
-    saveHighScore();
+    
 } 
 
-//startbtnEl();
+// Activate Start Quiz Button
 startEl.addEventListener("click", startbtnEl);
 
-// Save High Score
-var saveHighScore = function(event){
-    event.preventDefault();
+// Function to get Show High Score
+var getHighScore = function(){
+
     gameOverForm.style.display = "none";
     var score = localStorage.getItem("score");
     var inputEl = localStorage.getItem("initials");
-    //console.log('inputEl ', JSON.parse(inputEl));
 
     if (score === null || inputEl === null) {
         return;
     }
-    hsPlayer.textContent = "1. " + inputEl + score;
-    //hsTitle.textContent = "High Scores";
-    //hsTitle.style.display = "inline";
-    goBackBtn.textContent = "Go Bach";
+    viewHsEl.style.display = "none";
+    timerEl.style.display = "none";
+    hsPlayer.textContent = "1. " + inputEl + "-" + score;
+    goBackBtn.textContent = "Go Back";
     goBackBtn.style.display = "inline-block";
     clearHsBtn.textContent = "Clear high scores";
     clearHsBtn.style.display = "inline-block";
-
-
 }
 
-// Game over function
-var gameOver = function(){
+// Activate Submit Button and storage the score and Initials
+gameOverForm.addEventListener("submit", function (event) {
     event.preventDefault();
-var allDone = document.querySelector("#all-done");
-    allDone.textContent = "All Done!";
-var finalScore = document.querySelector("#final-score");
-    finalScore.textContent = "Your final Score is " + score;
-    labelGoEl.textContent = "Enter initials:";
-    labelGoEl.style.display = "inline-block";
-    inputGoEl.style.display = "inline";
-    submitGoEl.textContent = "Submit";
-    submitGoEl.style.display = "inline";
-
-    var inputValue = document.querySelector("#initials").value;
-
-    localStorage.setItem("score", score);
-    localStorage.setItem("initials", JSON.stringify(inputValue));
+    
+    if (inputGoEl.value === ""){
+        alert("You must enter your initials to continue");
+        showFormEl();
+        return;
+    } else {
+        localStorage.setItem("score", score);
+        localStorage.setItem("initials", inputGoEl.value);
+    }
 
     gameOverForm.reset();
-}
-gameOverForm.addEventListener("submit", saveHighScore);
+    
+    getHighScore();
+});
 
-// function to check answer
+// Function that contain Game Over form
+showFormEl = function(){
+    gameOverForm.style.display = "inline-block";
+    finalScoreEl.textContent = "Your final score is: " + score;
+}
+
+// function to check answer and continue to next questions
 var score = 0;
 var checkAnswer = function(answer){
     if( answer === triviaquestions[startQuestions].correct){
         // answer is correct
         correct();
-        score = timeleft;
+        score = (timeleft) + 1;
     }else {
         incorrect();
         timeleft = timeleft -10;
-        score = timeleft;
+        score = (timeleft) + 11;
     }
     count = 0;
     if(startQuestions < lastQuestions){
@@ -152,23 +151,19 @@ var checkAnswer = function(answer){
         displayQuestions();
     } else {
         triviaEl.style.display = "none";
-        gameOver();
         stopTimer();
+        showFormEl();
     }
 }
 
 // Correct answers function
 var correct = function(){
-    //var evaluation = document.querySelector("#evaluation");
     evaluation.textContent = "Correct!";
 }
 
 // incorrect answers function
 var incorrect = function(){
-    //var evaluation = document.querySelector("#evaluation");
     evaluation.textContent = "Wrong!";
-    
-
 }
 
 // set countdown function
@@ -177,20 +172,20 @@ var countdown = function() {
     // Use the setInterval() method to call a function to be executed every 1000 milliseconds
     
         if (timeleft > 1){
-            timerEl.innerHTML = "<h2>Timer: " + timeleft + "</h2>";
+            timerEl.textContent = "Timer: " + timeleft;
+            timerEl.style.display = "inline-block";
             timeleft--;
         } else if (timeleft === 1){
-            timerEl.innerHTML = "<h2>Timer: " + timeleft + "</h2>";
+            timerEl.textContent = "Timer: " + timeleft;
+            timerEl.style.display = "inline-block";
             timeleft--;
         } else {
-            //clearInterval(timeInterval);
             stopTimer();
             triviaEl.style.display = "none";
-            //gameOver();
         }
     
 }
-
+// Stop countdown function
 var stopTimer = function() {
     clearInterval(timeInterval);
 }
