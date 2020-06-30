@@ -102,6 +102,7 @@ var getHighScore = function(){
     }
     viewHsEl.style.display = "none";
     timerEl.style.display = "none";
+    hsTitle.style.display = "block";
     hsPlayer.textContent = "1. " + inputEl + "-" + score;
     goBackBtn.textContent = "Go Back";
     goBackBtn.style.display = "inline-block";
@@ -115,7 +116,6 @@ gameOverForm.addEventListener("submit", function (event) {
     
     if (inputGoEl.value === ""){
         alert("You must enter your initials to continue");
-        showFormEl();
         return;
     } else {
         localStorage.setItem("score", score);
@@ -131,6 +131,12 @@ gameOverForm.addEventListener("submit", function (event) {
 showFormEl = function(){
     gameOverForm.style.display = "inline-block";
     finalScoreEl.textContent = "Your final score is: " + score;
+}
+ShowFormReachZero = function(){
+    score = 0;
+    gameOverForm.style.display = "inline-block";
+    finalScoreEl.textContent = "Your final score is: " + score;
+    getHighScore();
 }
 
 // function to check answer and continue to next questions
@@ -180,8 +186,9 @@ var countdown = function() {
             timerEl.style.display = "inline-block";
             timeleft--;
         } else {
-            stopTimer();
             triviaEl.style.display = "none";
+            stopTimer();
+            ShowFormReachZero();
         }
     
 }

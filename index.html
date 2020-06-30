@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coding Trivia</title>
+    <!--Link HTML with CSS Stylesheet-->
+    <link rel="stylesheet" href="./assets/css/style.css"/>
 </head>
 <body>
     <header>
@@ -12,43 +14,45 @@
     </header>
 
     <body>
-        <div id="container">
-            <div id="welcome-container">
+        <!--Welcome page-->
+        <div id="container" class="container1">
+            <div id="welcome-container" class="welcome">
             <h2>Coding Quiz Challenge</h2>
             <p>Try answer the following code related questions winthin the limit.</p>
-            <p>Keep in mind that incorrect answers will penalize your score/time by ten seconds</p>
+            <p>Keep in mind that incorrect answers will penalize your score/time</p>
+            <p>by ten seconds</p>
+            <!--Button to start Quiz-->
             <button id="starttrivia">Start Quiz</button>
             </div>
-            <!--Division for the quiz-->
-            <div id="trivia" style="display: none">
-                <div id="question"></div>
-                <div id="options">
+            <!--Define Questions and Multiplo choice-->
+            <div id="trivia" style="display: none" class="questioncont">
+                <div id="question" class="questions"></div>
+                <div id="options" class="option1">
                     <div class="option" id="option-1" onclick="checkAnswer('option-1')"></div>
                     <div class="option" id="option-2" onclick="checkAnswer('option-2')"></div>
                     <div class="option" id="option-3" onclick="checkAnswer('option-3')"></div>
                     <div class="option" id="option-4" onclick="checkAnswer('option-4')"></div>
                 </div>
-                <h3 id="evaluation"></h3>
+                <h3 id="evaluation" class="evaluations"></h3>
             </div>
-            <form id="game-over" style="display: none">
+            <!--Form for game over-->
+            <form id="game-over" style="display: none" class="goform">
                 <h2 id="all-done">All Done!</h2>
                 <p id="final-score"></p>
                 <label id="enter-initials">Enter Initials:</label>
                 <input type="text" name="initials" id="initials" />
                 <button id="submit-initials" >Submit</button>
             </form>
-            <form id="high-score">
-                <h2 id="hs-title" style="display: none"></h2>
-                <p><span id="hs-player"></span></p>
+            <!--Form to display High Score-->
+            <form id="high-score" class="hsform">
+                <h2 id="hs-title" style="display: none">High scores</h2>
+                <p><span id="hs-player" class="hs-player1"></span></p>
                 <button id="go-backbtn" style="display: none"></button>
                 <button id="clearhs-btn" style="display: none"></button>
             </form>
         </div>
     </body>
-
-    
-        
-
+    <!--Link HTML with JavaScript-->
     <script src="./assets/js/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,110 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/*Apply Style to <header>*/
+header {
+    margin: 30px 0;
+    padding: 10px 50px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+header a {
+    color: #B150C7;
+}
+
+/*Apply Style to container*/
+.container1 {
+    margin: 30px 0;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.welcome h2 {
+    padding: 20px 10px;
+}
+button {
+    margin: 30px 10px;
+    padding: 4px 10px;
+    border-radius: 5px;
+    background-color: #300459;
+    color: white;
+}
+
+button:hover {
+    background-color: #B150C7;
+}
+
+/*Apply Style to questions*/
+.questioncont {
+    display: flex;
+    flex-wrap: wrap;
+    border: 100px 50px;
+}
+.questions {
+    font-size: large;
+    text-size-adjust: 70%;
+    font-weight: bold;
+    border: 100px 0px;
+    padding: 20px 0;
+}
+.option {
+    text-align: start;
+    margin: 10px 0px;
+    padding: 5px 10px;
+    width: 183px;
+    border-radius: 5px;
+    background-color: #300459;
+    color: white;
+}
+.option:hover {
+    background-color: #B150C7;
+}
+.evaluations {
+    margin: 20px 0;
+    padding: 5px 0;
+    color: #676269;
+    border-top: 1px solid;
+    border-color: #676269;
+    text-align: start;
+    font-weight: lighter;
+    font-style: italic;
+}
+/*Apply Style to Game Over Form*/
+.goform {
+    text-align: start;
+    padding: 30px 0;
+}
+
+.goform h2 {
+    padding: 10px 0;
+}
+
+.goform label {
+    padding: 5px 0;
+}
+
+/*Apply style to High Score Form*/
+.hsform h2 {
+    text-align: start;
+    margin: 20px 0;
+}
+.hsform p {
+    text-align: start;
+    
+}
+.hsform button {
+    text-align: start;
+    margin: 20px 0;
+}
+.hs-player1 {
+    background-color: #D0C7D1;
+}
+
+/*End Styling*/
